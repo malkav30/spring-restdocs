@@ -1,0 +1,140 @@
+[[build-configuration]]
+== Build configuration
+
+This section describes how to update your project's build configuration to use Spring REST
+docs.
+
+
+
+[[build-configuration-gradle]]
+=== Gradle build configuration
+
+Both {samples}[sample applications] contain `build.gradle` files that you may wish to
+use as a reference. The key parts of the configuration are described below.
+
+Configure the Asciidoctor plugin:
+
+[source,groovy,indent=0]
+----
+	plugins {
+		id "org.asciidoctor.convert" version "1.5.2"
+	}
+----
+
+Add a dependency on spring-restdocs in the `testCompile` configuration:
+
+[source,groovy,indent=0]
+----
+	dependencies {
+		testCompile 'org.springframework.restdocs:spring-restdocs:0.1.0.BUILD-SNAPSHOT'
+	}
+----
+
+Configure a property to define the output location for generated snippets:
+
+[source,groovy,indent=0]
+----
+	ext {
+		snippetsDir = file('build/generated-snippets')
+	}
+----
+
+Configure the `test` task with the `org.springframework.restdocs.outputDir` system
+property. This property controls the location into which Spring REST Docs will write the
+snippets that it generates.
+
+[source,groovy,indent=0]
+----
+	test {
+		systemProperty 'org.springframework.restdocs.outputDir', snippetsDir
+		outputs.dir snippetsDir
+	}
+----
+
+Configure the `asciidoctor` task and define an attribute named `snippets`. You use
+this attribute when including the generated snippets in your documentation.
+
+[source,groovy,indent=0]
+----
+	asciidoctor {
+		attributes 'snippets': snippetsDir
+		inputs.dir snippetsDir
+		dependsOn test
+	}
+----
+
+[[build-configuration-maven]]
+=== Maven build configuration
+
+Both {samples}[sample applications] contain `pom.xml` files that you may wish to
+use as a reference. The key parts of the configuration are described below.
+
+Add a dependency on `spring-restdocs` in the `test` scope:
+
+[source,xml,indent=0]
+----
+	<dependency>
+		<groupId>org.springframework.restdocs</groupId>
+		<artifactId>spring-restdocs</artifactId>
+		<version>0.1.0.BUILD-SNAPSHOT</version>
+		<scope>test</scope>
+	</dependency>
+----
+
+Configure a property to define the output location for generated snippets:
+
+[source,xml,indent=0]
+----
+	<properties>
+		<snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
+	</properties>
+----
+
+Configure the SureFire plugin with the `org.springframework.restdocs.outputDir` system
+property. This property controls the location into which Spring REST docs will write the
+snippets that it generates. The plugin is also configured to include files whose names end
+with `Documentation.java`:
+
+[source,xml,indent=0]
+----
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-surefire-plugin</artifactId>
+		<configuration>
+			<includes>
+				<include>**/*Documentation.java</include>
+			</includes>
+			<systemPropertyVariables>
+				<org.springframework.restdocs.outputDir>${snippetsDirectory}</org.springframework.restdocs.outputDir>
+			</systemPropertyVariables>
+		</configuration>
+	</plugin>
+----
+
+Configure the Asciidoctor plugin and define an attribute named `snippets`. You use
+this attribute when including the generated snippets in your documentation.
+
+[source,xml,indent=0]
+----
+	<plugin>
+		<groupId>org.asciidoctor</groupId>
+		<artifactId>asciidoctor-maven-plugin</artifactId>
+		<version>1.5.2</version>
+		<executions>
+			<execution>
+				<id>generate-docs</id>
+				<phase>package</phase>
+				<goals>
+					<goal>process-asciidoc</goal>
+				</goals>
+				<configuration>
+					<backend>html</backend>
+					<doctype>book</doctype>
+					<attributes>
+						<snippets>${snippetsDirectory}</snippets>
+					</attributes>
+				</configuration>
+			</execution>
+		</executions>
+	</plugin>
+----

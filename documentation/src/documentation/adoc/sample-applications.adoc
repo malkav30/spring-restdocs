@@ -1,0 +1,15 @@
+[[samples]]
+== Sample applications
+
+If you want to jump straight in, there are two sample applications available.
+{hateoas-sample}[One sample uses Spring HATEOAS] and {data-rest-sample}[the other uses
+Spring Data REST]. Both samples use Spring REST Docs to produce a detailed API guide
+and a getting started walkthrough. You can use either Gradle or Maven to build them.
+
+In each sample the source for the documentation can be found in `src/main/asciidoc`.
+`api-guide.adoc` produces an API guide for the service. `getting-started-guide.adoc`
+produces a getting started guide that provides an introductory walkthrough.
+
+The code that produces the generated snippets can be found in `src/test/java`.
+`ApiDocumentation.java` produces the snippets for the API guide.
+`GettingStartedDocumentation.java` produces the snippets for the getting started guide.

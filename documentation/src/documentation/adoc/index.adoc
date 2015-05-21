@@ -1,0 +1,18 @@
+= Spring REST Docs
+Andy Wilkinson
+:doctype: book
+:toc: left
+:source-highlighter: highlightjs
+:spring-mvc-test-docs: http://docs.spring.io/spring/docs/current/spring-framework-reference/html/testing.html#spring-mvc-test-framework
+:samples: https://github.com/spring-projects/spring-restdocs/tree/master/samples
+:hateoas-sample: https://github.com/spring-projects/spring-restdocs/tree/master/samples/rest-notes-spring-hateoas
+:data-rest-sample: https://github.com/spring-projects/spring-restdocs/tree/master/samples/rest-notes-spring-data-rest
+
+[[abstract]]
+
+Document RESTful services by combining hand-written documentation with auto-generated
+snippets produced with Spring MVC Test.
+
+include::introduction.adoc[]
+include::sample-applications.adoc[]
+include::build-configuration.adoc[]
